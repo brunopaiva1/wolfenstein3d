@@ -20,3 +20,26 @@ const wallsMaterial = new THREE.MeshBasicMaterial({ map: wallTexture });
 const groundMaterial = new THREE.MeshBasicMaterial({ color: 0x808080, wireframe: false });
 const doorMaterial = new THREE.MeshBasicMaterial({ map: doorTexture });
 const gunMaterial = new THREE.MeshBasicMaterial({ map: gunTexture });
+
+//Aqui se pode criar um mapa do tamanho desejado, 
+//no qual cada 1 na matriz vai ser um cubo e 0 um espaço livre
+const wallsMatrix = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 0, 0, 1, 1, 0, 1, 1],
+    [1, 1, 0, 0, 1, 1, 0, 1, 1],
+    [1, 1, 0, 0, 1, 1, 1, 1, 1],
+    [1, 1, 0, 0, 1, 0, 0, 1, 1],
+	[1, 1, 0, 0, 1, 0, 0, 1, 1],
+	[1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 0, 0, 0, 0, 0, 1, 1],
+    [1, 1, 0, 0, 0, 0, 0, 1, 1],
+    [1, 1, 0, 0, 0, 0, 0, 1, 1],
+    [1, 1, 0, 0, 0, 0, 0, 1, 1],
+    [1, 1, 0, 0, 0, 0, 0, 1, 1],
+	[1, 1, 1, 1, 1, 1, 1, 1, 1],
+	[1, 1, 0, 0, 0, 0, 0, 1, 1],
+	[1, 1, 0, 0, 0, 0, 0, 1, 1],
+	[1, 1, 1, 1, 1, 1, 1, 1, 1],
+	[1, 1, 1, 1, 1, 1, 1, 1, 1]
+];
