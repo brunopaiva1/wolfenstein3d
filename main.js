@@ -164,10 +164,10 @@ function animate() {
 	requestAnimationFrame(animate);
   
 	if (keysPressed['ArrowLeft']) {
-		camera.position.x -= moveSpeed;
+		camera.rotation.y += moveSpeed;
 	}
 	if (keysPressed['ArrowRight']) {
-		camera.position.x += moveSpeed;
+		camera.rotation.y -= moveSpeed;
 	}
 	if (keysPressed['ArrowUp']) {
 		camera.position.z -= moveSpeed;
