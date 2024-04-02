@@ -1,5 +1,8 @@
 import * as THREE from 'three';
 
+var keyboard = {};
+var player = { height: 1.8, speed: 0.2, turnSpeed: Math.PI * 0.02, canShoot: 0 };
+
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x3c3c3c);
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -95,6 +98,11 @@ function createCubesFromMatrix(matrix, yOffset, wallMaterial, doorMaterial, door
 }
 
 
+    // Configuração da posição e rotação da câmera
+    camera.position.set(0, player.height, -5);
+    camera.lookAt(new THREE.Vector3(0, player.height, 0));
+
+
 createCubesFromMatrix(wallsMatrix, 0, wallsMaterial, doorMaterial, doorCubes);
 createCubesFromMatrix(groundMatrix, -2, groundMaterial, doorMaterial, []);
 
@@ -157,28 +165,44 @@ function handleKeyUp(event) {
     keysPressed[event.key] = false;
 }
 
-document.addEventListener('keydown', handleKeyDown);
-document.addEventListener('keyup', handleKeyUp);
+document.addEventListener('keydown', function(event) {
+    keyboard[event.key] = true;
+});
+
+document.addEventListener('keyup', function(event) {
+    keyboard[event.key] = false;
+});
 
 function animate() {
-	requestAnimationFrame(animate);
-  
-	if (keysPressed['ArrowLeft']) {
-		camera.rotation.y += moveSpeed;
-	}
-	if (keysPressed['ArrowRight']) {
-		camera.rotation.y -= moveSpeed;
-	}
-	if (keysPressed['ArrowUp']) {
-		camera.position.z -= moveSpeed;
-	}
-	if (keysPressed['ArrowDown']) {
-		camera.position.z += moveSpeed;
-	}
+    requestAnimationFrame(animate);
 
-	checkCollision();
-	
-	renderer.render(scene, camera);
+    // Movimentação da câmera
+    if (keyboard['a'] || keyboard['A']) { // Tecla A
+        camera.position.x += Math.sin(camera.rotation.y - Math.PI / 2) * player.speed;
+        camera.position.z += Math.cos(camera.rotation.y - Math.PI / 2) * player.speed;
+    }
+    if (keyboard['d'] || keyboard['D']) { // Tecla D
+        camera.position.x += Math.sin(camera.rotation.y + Math.PI / 2) * player.speed;
+        camera.position.z += Math.cos(camera.rotation.y + Math.PI / 2) * player.speed;
+    }
+    if (keyboard['w'] || keyboard['W']) { // Tecla W
+        camera.position.x -= Math.sin(camera.rotation.y) * player.speed;
+        camera.position.z -= Math.cos(camera.rotation.y) * player.speed;
+    }
+    if (keyboard['s'] || keyboard['S']) { // Tecla S
+        camera.position.x += Math.sin(camera.rotation.y) * player.speed;
+        camera.position.z += Math.cos(camera.rotation.y) * player.speed;
+    }
+    if (keyboard['ArrowLeft']) { // Tecla seta esquerda
+        camera.rotation.y -= player.turnSpeed;
+    }
+    if (keyboard['ArrowRight']) { // Tecla seta direita
+        camera.rotation.y += player.turnSpeed;
+    }
+
+    checkCollision();
+
+    renderer.render(scene, camera);
 }
-  
+
 animate();
