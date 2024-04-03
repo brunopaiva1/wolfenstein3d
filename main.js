@@ -12,14 +12,19 @@ const textureLoader = new THREE.TextureLoader();
 const wallTexture = textureLoader.load('images/wall.png');
 const doorTexture = textureLoader.load('images/door.png');
 const gunTexture = textureLoader.load('images/gun.png');
+const botTexture = textureLoader.load('images/bot.png');
 
 const geometry = new THREE.BoxGeometry(2, 2, 2);
 const doorGeometry = new THREE.BoxGeometry(2, 2, 0.5);
-const gunGeometry = new THREE.PlaneGeometry(10, 10);
 const wallsMaterial = new THREE.MeshBasicMaterial({ map: wallTexture });
 const groundMaterial = new THREE.MeshBasicMaterial({ color: 0x808080, wireframe: false });
 const doorMaterial = new THREE.MeshBasicMaterial({ map: doorTexture });
-const gunMaterial = new THREE.MeshBasicMaterial({ map: gunTexture });
+const gunMaterial = new THREE.SpriteMaterial({ map: gunTexture });
+const botMaterial = new THREE.SpriteMaterial({ map: botTexture });
+
+const botSprite = new THREE.Sprite(botMaterial);
+
+const gunSprite = new THREE.Sprite(gunMaterial);
 
 //Aqui se pode criar um mapa do tamanho desejado, 
 //no qual cada 1 na matriz vai ser um cubo e 0 um espaço livre
@@ -47,6 +52,9 @@ const wallsMatrix = [
 //Aqui colocar os cubos da matriz da parede que são portas
 const doorCubes = [{ x: 3, y: 7 }, { x: 5, y: 7 }, { x: 6, y: 4 }, { x: 4, y: 13 }];
 
+//Aqui colocar os cubos que são bots
+const bots = [{ x: 2, y: 8 }, { x: 4, y: 10 }, { x: 6, y: 9}, { x: 5, y: 5}, { x: 6, y: 2 }, { x: 3, y: 3 }, { x: 2, y: 2 }];
+
 //Matriz para criar o chão da cena, ela precisa ser do mesmo tamanho
 //que a matriz das paredes, mas com tudo 1. 
 const groundMatrix = [
@@ -70,7 +78,7 @@ const groundMatrix = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 
-function createCubesFromMatrix(matrix, yOffset, wallMaterial, doorMaterial, doorCubes) {
+function createCubesFromMatrix(matrix, yOffset, wallMaterial, doorMaterial, doorCubes, bots) {
     const numRows = matrix.length;
     const numCols = matrix[0].length;
 
@@ -92,11 +100,18 @@ function createCubesFromMatrix(matrix, yOffset, wallMaterial, doorMaterial, door
             }
         }
     }
+
+    bots.forEach(bot => {
+        const botSprite = new THREE.Sprite(botMaterial);
+        botSprite.position.set(bot.x * 2, yOffset, bot.y * 2);
+        botSprite.scale.set(2, 2, 2);
+        scene.add(botSprite);
+    });
+
 }
 
-
-createCubesFromMatrix(wallsMatrix, 0, wallsMaterial, doorMaterial, doorCubes);
-createCubesFromMatrix(groundMatrix, -2, groundMaterial, doorMaterial, []);
+createCubesFromMatrix(wallsMatrix, 0, wallsMaterial, doorMaterial, doorCubes, bots);
+createCubesFromMatrix(groundMatrix, -2, groundMaterial, doorMaterial, [], []);
 
 
 // Aqui se pode posicionar a câmera na posição desejada, 
@@ -108,6 +123,15 @@ function positionCameraAtMatrixPosition(matrix, camera, cubeDistance) {
 }
 
 positionCameraAtMatrixPosition(wallsMatrix, camera, 2);
+
+//Configurações da arma
+function positionGun(cameraX, cameraZ) {
+    gunSprite.position.set(cameraX, 0, cameraZ - 0.195);
+}
+
+gunSprite.scale.set(0.3, 0.3, 0.3);
+scene.add(gunSprite);
+
 
 const moveSpeed = 0.1;
 const keysPressed = {};
@@ -165,7 +189,7 @@ function animate() {
   
 	if (keysPressed['ArrowLeft']) {
 		camera.position.x -= moveSpeed;
-	}
+    }
 	if (keysPressed['ArrowRight']) {
 		camera.position.x += moveSpeed;
 	}
@@ -177,6 +201,8 @@ function animate() {
 	}
 
 	checkCollision();
+
+    positionGun(camera.position.x, camera.position.z)
 	
 	renderer.render(scene, camera);
 }
