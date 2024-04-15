@@ -184,8 +184,15 @@ function handleKeyUp(event) {
 document.addEventListener('keydown', handleKeyDown);
 document.addEventListener('keyup', handleKeyUp);
 
+let angulo = 0;
 function animate() {
 	requestAnimationFrame(animate);
+
+    let px = camera.position.x
+    let py = camera.position.y
+    let pz = camera.position.z
+
+    camera.lookAt(px - Math.sin(angulo), py, pz - Math.cos(angulo))
   
 	if (keysPressed['ArrowLeft']) {
 		camera.position.x -= moveSpeed;
@@ -194,11 +201,20 @@ function animate() {
 		camera.position.x += moveSpeed;
 	}
 	if (keysPressed['ArrowUp']) {
-		camera.position.z -= moveSpeed;
+		camera.position.z -= moveSpeed * Math.cos(angulo);
+        camera.position.x -= moveSpeed * Math.sin(angulo);
 	}
 	if (keysPressed['ArrowDown']) {
-		camera.position.z += moveSpeed;
+		camera.position.z += moveSpeed * Math.cos(angulo);
+		camera.position.x += moveSpeed * Math.sin(angulo);
+
 	}
+    if (keysPressed['a']) {
+        angulo += 0.01;
+    }
+    if (keysPressed['d']) {
+        angulo -= 0.01;
+    }
 
 	checkCollision();
 
