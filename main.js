@@ -124,7 +124,7 @@ function positionCameraAtMatrixPosition(matrix, camera, cubeDistance) {
 
 positionCameraAtMatrixPosition(wallsMatrix, camera, 2);
 
-//Configurações da arma
+//configuração da arma
 function positionGun(cameraX, cameraZ) {
     gunSprite.position.set(cameraX, 0, cameraZ - 0.195);
 }
@@ -218,9 +218,9 @@ function animate() {
 
 	checkCollision();
 
-    gunSprite.position.set(px - Math.sin(angulo), 0, pz - Math.cos(angulo) - 0.195);
+    // gunSprite.position.set(px - Math.sin(angulo), py, pz - Math.cos(angulo) - 0.195);
 
-    //positionGun(camera.position.x, camera.position.z);
+    positionGun(px - Math.sin(angulo) - 0.196, pz - Math.cos(angulo) - 0.195);
 	
 	renderer.render(scene, camera);
 }
