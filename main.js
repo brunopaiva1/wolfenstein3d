@@ -210,10 +210,10 @@ function animate() {
 
 	}
     if (keysPressed['a']) {
-        angulo += 0.01;
+        angulo += 0.05;
     }
     if (keysPressed['d']) {
-        angulo -= 0.01;
+        angulo -= 0.05;
     }
 
 	checkCollision();
