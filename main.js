@@ -193,6 +193,7 @@ function animate() {
     let pz = camera.position.z
 
     camera.lookAt(px - Math.sin(angulo), py, pz - Math.cos(angulo))
+    // gunSprite.lookAt(px - Math.sin(angulo) + 0.81, py, pz - Math.cos(angulo) + 0.81)
   
 	if (keysPressed['ArrowLeft']) {
 		camera.position.x -= moveSpeed;
@@ -218,7 +219,7 @@ function animate() {
 
 	checkCollision();
 
-    gunSprite.position.set(px - Math.sin(angulo), py, pz - Math.cos(angulo) + 0.8);
+    gunSprite.position.set(px - Math.sin(angulo), py, pz - Math.cos(angulo) + 0.81);
 
     // positionGun(camera.position.x, camera.position.z)
 	
