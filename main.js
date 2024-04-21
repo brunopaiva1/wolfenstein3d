@@ -218,9 +218,9 @@ function animate() {
 
 	checkCollision();
 
-    // gunSprite.position.set(px - Math.sin(angulo), py, pz - Math.cos(angulo) - 0.195);
+    gunSprite.position.set(px - Math.sin(angulo), py, pz - Math.cos(angulo) + 0.8);
 
-    positionGun(px - Math.sin(angulo) - 0.196, pz - Math.cos(angulo) - 0.195);
+    // positionGun(camera.position.x, camera.position.z)
 	
 	renderer.render(scene, camera);
 }
